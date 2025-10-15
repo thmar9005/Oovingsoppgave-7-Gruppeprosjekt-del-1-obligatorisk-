@@ -1,0 +1,33 @@
+"""
+Created on Wed Oct 15 15:43:42 2025
+
+@author: eirikomland
+"""
+
+# Oppgave 3: Skriv ut alle registrerte emner
+def skriv_ut_alle_emner(emnekoder, semestre, studiepoeng):
+    if not emnekoder:
+        print("Ingen emner er registrert ennå.")
+        return
+    
+    print("\n--- Alle registrerte emner ---")
+    for i in range(len(emnekoder)):
+        print(f"{emnekoder[i]} ({semestre[i]}), {studiepoeng[i]} studiepoeng")
+
+
+# Oppgave 4: Skriv ut studieplanen
+def skriv_ut_studieplan(studieplan, emnekoder, semestre, studiepoeng):
+    print("\n--- Studieplan ---")
+    for semester_nummer in range(1, 7):
+        emner_i_semester = studieplan.get(semester_nummer, [])
+        if not emner_i_semester:
+            print(f"Semester {semester_nummer}: (ingen emner)")
+        else:
+            total_poeng = 0
+            print(f"Semester {semester_nummer}:")
+            for kode in emner_i_semester:
+                if kode in emnekoder:
+                    indeks = emnekoder.index(kode)
+                    print(f"  {kode} ({semestre[indeks]}), {studiepoeng[indeks]} studiepoeng")
+                    total_poeng += studiepoeng[indeks]
+            print(f"  Totalt: {total_poeng} studiepoeng\n")
