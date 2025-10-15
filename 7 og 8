@@ -1,0 +1,70 @@
+
+emner = []
+semester = []
+studiepoeng = []
+studieplan = {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+
+def les_fra_fil(filnavn):
+    """Leser inn emner og studieplan fra en tekstfil."""
+    global emner, semester, studiepoeng, studieplan
+    try:
+        with open(filnavn, "r", encoding="utf-8") as f:
+            linjer = f.readlines()
+
+      
+        emner.clear()
+        semester.clear()
+        studiepoeng.clear()
+        for i in range(1, 7):
+            studieplan[i].clear()
+
+       
+        seksjon = ""
+        for linje in linjer:
+            linje = linje.strip()
+            if linje == "EMNER:":
+                seksjon = "emner"
+            elif linje == "STUDIEPLAN:":
+                seksjon = "plan"
+            elif linje == "":
+                continue
+            elif seksjon == "emner":
+                
+                deler = linje.split(",")
+                emner.append(deler[0])
+                semester.append(deler[1])
+                studiepoeng.append(int(deler[2]))
+            elif seksjon == "plan":
+               
+                deler = linje.split(":")
+                semnr = int(deler[0])
+                if len(deler) > 1:
+                    emnekoder = deler[1].split(",")
+                    studieplan[semnr] = [k.strip() for k in emnekoder if k.strip()]
+        print("Data er lest inn fra fil!")
+    except FileNotFoundError:
+        print("Fant ikke fila.")
+    except Exception as e:
+        print("Feil ved innlesing:", e)
+
+def skriv_meny():
+    print("\nMeny")
+    print("7. Les inn emnene og studieplanen fra fil")
+    print("8. Avslutt")
+
+def main():
+    while True:
+        skriv_meny()
+        valg = input("Velg: ")
+
+        if valg == "7":
+            fil = input("Filnavn (f.eks. studieplan.txt): ")
+            les_fra_fil(fil)
+        elif valg == "8":
+            print("Avslutter programmet.")
+            break
+        else:
+            print("Ugyldig valg, prøv igjen.")
+
+if __name__ == "__main__":
+    main()
