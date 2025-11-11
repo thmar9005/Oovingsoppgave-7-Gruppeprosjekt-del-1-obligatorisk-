@@ -1,6 +1,3 @@
-# Skriver dette bare fordi jeg vet ikke om at han siste som er igjen har gjort oppgaven eller ikke.
-# Bla litt nedover for å finne opg 7 og 8. 
-
 # Oppgave 1: 
 emnekoder = []
 semester = []
@@ -62,7 +59,6 @@ def skriv_ut_studieplan():
             for i in emner_i_semester:
                 print(f"  {emnekoder[i]} ({semester[i]}), {studiepoeng[i]} studiepoeng")
             print(f"  Totalt: {total_poeng} studiepoeng\n")
-
 
 # Oppgave 5:
 def sjekk_gyldighet():
@@ -137,6 +133,8 @@ def hovedmeny():
         print("\n--- STUDIEPLAN MENY ---")
         print("1. Legg til nytt emne")
         print("2. Legg til emne i studieplan")
+        print("3. Skriv ut alle registrerte emner")
+        print("4. Skriv ut studieplanen")
         print("5. Sjekk gyldighet")
         print("6. Lagre studieplan til fil")
         print("7. Les studieplan fra fil")
@@ -154,6 +152,12 @@ def hovedmeny():
             emne_index = int(input("Emneindeks (starter på 0): "))
             semester_nummer = int(input("Semester (1-6): "))
             legg_til_emne_i_studieplan(emne_index, semester_nummer)
+
+        elif valg == "3":
+            skriv_ut_alle_emner()
+
+        elif valg == "4":
+            skriv_ut_studieplan()
 
         elif valg == "5":
             sjekk_gyldighet()
@@ -173,3 +177,5 @@ def hovedmeny():
 
 # TESTING:
 
+if __name__ == "__main__":
+    hovedmeny()
