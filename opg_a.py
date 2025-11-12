@@ -57,7 +57,7 @@ def legg_til_emne_i_studieplan(emne_index, semester_nummer):
         print("Dette er et våremne og kan ikke legges til i et høstsemester.")
         return
 
-    naavaerende_sp = sum([emner[i] for i in studieplan[semester_nummer - 1]])
+    naavaerende_sp = sum([emner[i].studiepoeng for i in studieplan[semester_nummer - 1]])
     if naavaerende_sp + emne.studiepoeng > 30:
         print("Ikke plass til dette emnet i semesteret, maks 30 studiepoeng")
         return
@@ -82,14 +82,14 @@ def skriv_ut_studieplan():
         if not emner_i_semester:
             print(f"Semester {semester_nummer}: (ingen emner)")
         else:
-            total_poeng = sum(emner[i] for i in emner_i_semester)
+            total_poeng = sum(emner[i].studiepoeng for i in emner_i_semester)
             print(f"Semester {semester_nummer}:")
             for i in emner_i_semester:
                 e = emner[i]
                 if e.semester == "H":
                     sem_full = "høst"
                 else:
-                    e.semester = "vår"
+                    sem_full = "vår"
                 print(f"  {e.kode} - {e.navn} ({sem_full}), {e.studiepoeng} studiepoeng")
             print(f"  Totalt: {total_poeng} studiepoeng\n")
 
@@ -97,7 +97,7 @@ def skriv_ut_studieplan():
 def sjekk_gyldighet():
     gyldig = True
     for i, sem in enumerate(studieplan, start=1):
-        total_sp = sum(emner[j] for j in sem)
+        total_sp = sum(emner[j].studiepoeng for j in sem)
         if total_sp == 0:
             print(f"Semester {i}: (ingen emner) -> ikke gyldig (må være 30 sp)")
             gyldig = False
@@ -117,7 +117,7 @@ import csv
 def lagre_studieplan_csv(path="studieplan.csv"):
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["Semester", "Emnekode", "Type", "Studiepoeng"])
+        w.writerow(["Semester", "Emnekode", "Navn", "Type", "Studiepoeng"])
         for sem_nr, sem in enumerate(studieplan, start=1):
             for i in sem:
                 e = emner[i]
@@ -140,7 +140,7 @@ def les_studieplan_csv(path="studieplan.csv"):
             for rad in reader:
                 kode = rad["Emnekode"]
                 navn = rad["Navn"]
-                sem_type = rad["Type"]
+                sem_type = rad["Type"].upper()
                 sp = int(rad["Studiepoeng"])
                 sem_nr = int(rad["Semester"])
 
@@ -150,6 +150,7 @@ def les_studieplan_csv(path="studieplan.csv"):
                     if emner[i].kode == kode:
                         eksisterende_index = i
                         break
+                    
                 if eksisterende_index is None:                    
                     e = Emne(kode, navn, sem_type, sp)
                     emner.append(e)
@@ -208,7 +209,7 @@ def hovedmeny():
             les_studieplan_csv()
 
         elif valg == "8":
-            print("Avslutter programmet. Ha en fin dag! 👋")
+            print("Avslutter programmet. Ha en fin dag!")
             break
 
         else:
